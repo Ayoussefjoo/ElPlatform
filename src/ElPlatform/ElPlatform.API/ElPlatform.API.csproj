@@ -9,7 +9,9 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.9" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.9" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.9" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="5.0.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.9">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -18,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ElPlatform.BAL\ElPlatform.BAL.csproj" />
     <ProjectReference Include="..\ElPlatform.DAL\ElPlatform.DAL.csproj" />
   </ItemGroup>
 
