@@ -37,7 +37,7 @@ namespace ElPlatform.API
             services.AddDbContext<ElPlatformDbContext>(options =>
             {
                 options.UseLazyLoadingProxies();
-                options.UseSqlServer(Configuration.GetConnectionString("ConnStr"));
+                options.UseSqlServer(Configuration.GetConnectionString("TestDB"));
             });
 
             services.AddDefaultIdentity<ApplicationUser>(options =>
