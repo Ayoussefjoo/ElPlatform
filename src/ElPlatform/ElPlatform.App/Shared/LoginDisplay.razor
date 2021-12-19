@@ -6,7 +6,6 @@
     <Authorized>
         <MudMenu Icon="@Icons.Material.Filled.Person" Color="Color.Primary" Direction="Direction.Right" OffsetY="true">
             <MudMenuItem>@context.User.FindFirst(ClaimTypes.GivenName).Value</MudMenuItem>
-            <MudMenuItem>My account</MudMenuItem>
             <MudMenuItem OnClick="LogOutAsync">Logout</MudMenuItem>
         </MudMenu>
     </Authorized>
