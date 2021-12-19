@@ -1,0 +1,15 @@
+﻿@inherits LayoutComponentBase
+<MudLayout>
+    <MudAppBar Elevation="1" Style="background-color: #e4b228 !important">
+        <MudText Typo="Typo.h5" Class="ml-3" Style="color: #772145">ElPlatform</MudText>
+        <MudAppBarSpacer />
+        <LoginDisplay/>
+    </MudAppBar>
+    <MudContainer Class="mt-16">
+        @Body
+    </MudContainer>
+</MudLayout>
+<MudThemeProvider />
+@code {
+
+}

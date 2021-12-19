@@ -1,4 +1,5 @@
 using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,6 +26,8 @@ namespace ElPlatform.App
             builder.Services.AddScoped(sp => sp.GetService<IHttpClientFactory>().CreateClient("ElPlatformApp.Api"));
             builder.Services.AddMudServices();
             builder.Services.AddBlazoredLocalStorage();
+            builder.Services.AddAuthorizationCore();
+            builder.Services.AddScoped<AuthenticationStateProvider,JWTAuthenticationStateProvider>();
             await builder.Build().RunAsync();
         }
     }
