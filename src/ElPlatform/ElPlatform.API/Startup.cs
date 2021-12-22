@@ -1,5 +1,6 @@
 using AutoMapper;
 using ElPlatform.BAL.IServices;
+using ElPlatform.BAL.Profiles;
 using ElPlatform.BAL.Services;
 using ElPlatform.DAL;
 using ElPlatform.DAL.Model;
@@ -66,6 +67,7 @@ namespace ElPlatform.API
                 };
             });
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IMediaService, MediaService>();
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy", policy =>
@@ -75,8 +77,17 @@ namespace ElPlatform.API
                 });
             });
 
+            // Auto Mapper Configurations
+            var mapperConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new ApplicationUserProfile());
+                mc.AddProfile(new MediaItemProfile());
+            });
 
-           
+            IMapper mapper = mapperConfig.CreateMapper();
+            services.AddSingleton(mapper);
+
+
 
             services.AddSwaggerGen(c =>
             {
