@@ -37,7 +37,7 @@ namespace ElPlatform.API
             services.AddDbContext<ElPlatformDbContext>(options =>
             {
                 options.UseLazyLoadingProxies();
-                options.UseSqlServer(Configuration.GetConnectionString("TestDB"));
+                options.UseSqlServer(Configuration.GetConnectionString("ConnStr"));
             });
 
             services.AddDefaultIdentity<ApplicationUser>(options =>
@@ -70,8 +70,8 @@ namespace ElPlatform.API
             {
                 options.AddPolicy("CorsPolicy", policy =>
                 {
-                    //policy.WithOrigins("http://joocode-001-site1.itempurl.com").AllowAnyHeader().AllowAnyMethod();
-                    policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                    policy.WithOrigins("http://joocode-001-site1.itempurl.com").AllowAnyHeader().AllowAnyMethod();
+                    //policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
                 });
             });
 

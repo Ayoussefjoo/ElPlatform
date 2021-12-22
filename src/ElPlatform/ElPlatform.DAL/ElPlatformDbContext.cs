@@ -13,8 +13,11 @@ namespace ElPlatform.DAL
     {
         public ElPlatformDbContext(DbContextOptions<ElPlatformDbContext> options) : base(options)
         {
-      
+            
         }
+        public DbSet<MediaType> MediaTypes { get; set; }
+        public DbSet<MediaItemCategory> MediaItemCategories { get; set; }
+        public DbSet<MediaItem> MediaItems { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
