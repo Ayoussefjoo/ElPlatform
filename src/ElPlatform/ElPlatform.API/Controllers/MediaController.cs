@@ -23,6 +23,7 @@ namespace ElPlatform.API.Controllers
             _configuration = configuration;
         }
 
+        #region Media Item EndPoints
         // /api/media/GetMItems
         [HttpGet("GetMItems")]
         [ProducesResponseType(200, Type = typeof(ApiResponse<List<MediaItemVM>>))]
@@ -34,28 +35,49 @@ namespace ElPlatform.API.Controllers
             return Ok(new ApiResponse<List<MediaItemVM>>(result, "MediaItems retrieved successfully"));
         }
 
-        // /api/media/GetMItemById
-        [HttpGet("GetMItemById")]
         [ProducesResponseType(200, Type = typeof(ApiResponse<MediaItemVM>))]
         [ProducesResponseType(400, Type = typeof(ApiErrorResponse))]
-        public async Task<IActionResult> GetMediaItemsAsync(int Id)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
         {
-            var result = await _mediaService.GetMediaItemByIdAsync(Id);
+            var result = await _mediaService.GetMediaItemByIdAsync(id);
 
             return Ok(new ApiResponse<MediaItemVM>(result, "MediaItem retrieved successfully"));
         }
 
-        //Media Type EndPoints
-        // /api/media/GetMTypes
-        [HttpGet("GetMTypes")]
-        [ProducesResponseType(200, Type = typeof(ApiResponse<List<MediaTypeVM>>))]
+        [ProducesResponseType(200, Type = typeof(ApiResponse<MediaItemVM>))]
         [ProducesResponseType(400, Type = typeof(ApiErrorResponse))]
-        public async Task<IActionResult> GetMediaTypesAsync()
+        [HttpPost()]
+        public async Task<IActionResult> Post([FromForm] MediaItemRequestVM model)
         {
-            var result = await _mediaService.GetMediaTypesAsync();
+            var result = await _mediaService.AddMediaItemAsync(model);
 
-            return Ok(new ApiResponse<List<MediaTypeVM>>(result, "MediaTypes retrieved successfully"));
+            return Ok(new ApiResponse<MediaItemVM>(result, "Media Item created successfully"));
         }
+
+        [ProducesResponseType(200, Type = typeof(ApiResponse<MediaItemVM>))]
+        [ProducesResponseType(400, Type = typeof(ApiErrorResponse))]
+        [HttpPut()]
+        public async Task<IActionResult> Put([FromForm] MediaItemRequestVM model)
+        {
+            var result = await _mediaService.UpdateMediaItemAsync(model);
+
+            return Ok(new ApiResponse<MediaItemVM>(result, "Media Item edited successfully"));
+        }
+
+        [ProducesResponseType(200, Type = typeof(ApiResponse))]
+        [ProducesResponseType(400, Type = typeof(ApiErrorResponse))]
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await _mediaService.DeleteMediaItemAsync(id);
+
+            return Ok(new ApiResponse("Media Item deleted successfully"));
+        }
+        #endregion
+        
+
+       
 
         // /api/media/GetMItemById
         [HttpGet("GetMTypeById")]

@@ -7,6 +7,7 @@ using ElPlatform.DAL.Model;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -15,6 +16,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
+using System.Security.Claims;
 using System.Text;
 
 namespace ElPlatform.API
@@ -68,6 +70,7 @@ namespace ElPlatform.API
             });
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IMediaService, MediaService>();
+
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy", policy =>
@@ -83,15 +86,27 @@ namespace ElPlatform.API
                 mc.AddProfile(new ApplicationUserProfile());
                 mc.AddProfile(new MediaItemProfile());
             });
-
             IMapper mapper = mapperConfig.CreateMapper();
             services.AddSingleton(mapper);
-
 
 
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ElPlatform.API", Version = "v1" });
+            });
+
+            // Configure the identity options for the logged in user 
+            services.AddScoped(sp =>
+            {
+                var identityOptions = new BAL.Options.IdentityOptions();
+                var httpContext = sp.GetService<IHttpContextAccessor>().HttpContext;
+                if (httpContext.User.Identity.IsAuthenticated)
+                {
+                    identityOptions.UserId = httpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                    identityOptions.FirstName = httpContext.User.FindFirst(ClaimTypes.GivenName).Value;
+                    identityOptions.LastName = httpContext.User.FindFirst(ClaimTypes.Surname).Value;
+                }
+                return identityOptions;
             });
         }
 
