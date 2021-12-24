@@ -1,4 +1,5 @@
 ﻿using ElPlatform.BAL.IServices;
+using ElPlatform.BAL.Options;
 using ElPlatform.BAL.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -26,13 +27,13 @@ namespace ElPlatform.API.Controllers
         //Media Item Category EndPoints
         // /api/media/GetMICatigories
         [HttpGet("GetMICatigories")]
-        [ProducesResponseType(200, Type = typeof(ApiResponse<List<MediaItemCategoryVM>>))]
+        [ProducesResponseType(200, Type = typeof(ApiResponse<PagedList<MediaItemCategoryVM>>))]
         [ProducesResponseType(400, Type = typeof(ApiErrorResponse))]
-        public async Task<IActionResult> GetGetMICatigoriesAsync()
+        public async Task<IActionResult> GetGetMICatigoriesAsync(int pageNumber, int pageSize)
         {
-            var result = await _mediaService.GetMediaItemCategoriesAsync();
+            var result = await _mediaService.GetMediaItemCategoriesAsync(pageNumber,pageSize);
 
-            return Ok(new ApiResponse<List<MediaItemCategoryVM>>(result, "Media Item Categories retrieved successfully"));
+            return Ok(new ApiResponse<PagedList<MediaItemCategoryVM>>(result, "Media Item Categories retrieved successfully"));
         }
 
         [ProducesResponseType(200, Type = typeof(ApiResponse<MediaItemCategoryVM>))]

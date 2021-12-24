@@ -18,8 +18,8 @@ namespace ElPlatform.DAL.Infrastructure
 
         public UnitOfWork()
         {
-            var ConnectionString = "Data Source=WKWAE3955183\\JOOSERVER;Initial Catalog=-PlannerApp;Integrated Security=True";
-            //var ConnectionString = "Data Source=SQL6012.site4now.net;Initial Catalog=db_a67332_elplatform;User Id=db_a67332_elplatform_admin;Password=TcA@1234";
+            //var ConnectionString = "Data Source=WKWAE3955183\\JOOSERVER;Initial Catalog=-PlannerApp;Integrated Security=True";
+            var ConnectionString = "Data Source=SQL6012.site4now.net;Initial Catalog=db_a67332_elplatform;User Id=db_a67332_elplatform_admin;Password=TcA@1234";
             var optionsBuilder = new DbContextOptionsBuilder<ElPlatformDbContext>();
             optionsBuilder.UseSqlServer(ConnectionString);
             _db = new ElPlatformDbContext(optionsBuilder.Options);

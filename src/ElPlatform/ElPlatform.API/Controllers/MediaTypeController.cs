@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ElPlatform.BAL.IServices;
+using ElPlatform.BAL.Options;
 using ElPlatform.BAL.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -27,13 +28,13 @@ namespace ElPlatform.API.Controllers
         //Media Type EndPoints
         // /api/media/GetMTypes
         [HttpGet("GetMTypes")]
-        [ProducesResponseType(200, Type = typeof(ApiResponse<List<MediaTypeVM>>))]
+        [ProducesResponseType(200, Type = typeof(ApiResponse<PagedList<MediaTypeVM>>))]
         [ProducesResponseType(400, Type = typeof(ApiErrorResponse))]
-        public async Task<IActionResult> GetMediaTypesAsync()
+        public async Task<IActionResult> GetMediaTypesAsync(int pageNumber, int pageSize)
         {
-            var result = await _mediaService.GetMediaTypesAsync();
+            var result = await _mediaService.GetMediaTypesAsync(pageNumber,pageSize);
 
-            return Ok(new ApiResponse<List<MediaTypeVM>>(result, "MediaTypes retrieved successfully"));
+            return Ok(new ApiResponse<PagedList<MediaTypeVM>>(result, "MediaTypes retrieved successfully"));
         }
 
         [ProducesResponseType(200, Type = typeof(ApiResponse<MediaTypeVM>))]

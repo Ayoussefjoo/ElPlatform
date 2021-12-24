@@ -1,4 +1,5 @@
 ﻿using ElPlatform.BAL.IServices;
+using ElPlatform.BAL.Options;
 using ElPlatform.BAL.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -26,13 +27,13 @@ namespace ElPlatform.API.Controllers
         #region Media Item EndPoints
         // /api/media/GetMItems
         [HttpGet("GetMItems")]
-        [ProducesResponseType(200, Type = typeof(ApiResponse<List<MediaItemVM>>))]
+        [ProducesResponseType(200, Type = typeof(ApiResponse<PagedList<MediaItemVM>>))]
         [ProducesResponseType(400, Type = typeof(ApiErrorResponse))]
-        public async Task<IActionResult> GetMediaItemsAsync()
+        public async Task<IActionResult> GetMediaItemsAsync(int pageNumber, int pageSize)
         {
-            var result = await _mediaService.GetMediaItemsAsync();
+            var result = await _mediaService.GetMediaItemsAsync(pageNumber,pageSize);
 
-            return Ok(new ApiResponse<List<MediaItemVM>>(result, "MediaItems retrieved successfully"));
+            return Ok(new ApiResponse<PagedList<MediaItemVM>>(result, "MediaItems retrieved successfully"));
         }
 
         [ProducesResponseType(200, Type = typeof(ApiResponse<MediaItemVM>))]
@@ -77,18 +78,6 @@ namespace ElPlatform.API.Controllers
         #endregion
         
 
-       
-
-        // /api/media/GetMItemById
-        [HttpGet("GetMTypeById")]
-        [ProducesResponseType(200, Type = typeof(ApiResponse<MediaTypeVM>))]
-        [ProducesResponseType(400, Type = typeof(ApiErrorResponse))]
-        public async Task<IActionResult> GetMediaTypesAsync(int Id)
-        {
-            var result = await _mediaService.GetMediaTypeByIdAsync(Id);
-
-            return Ok(new ApiResponse<MediaTypeVM>(result, "Media Type retrieved successfully"));
-        }
 
     }
 }

@@ -61,13 +61,15 @@ namespace ElPlatform.BAL.Services
 
             return _mapper.Map<MediaItemVM>(mediaItem);
         }
-        public async Task<List<MediaItemVM>> GetMediaItemsAsync()
+        public async Task<PagedList<MediaItemVM>> GetMediaItemsAsync(int page = 1, int pageSize = 12)
         {
             var mediaItems = await (from p in _db.MediaItems
                                     where p.IsActive
                                     orderby p.CreatedDate descending
                                     select p).ToArrayAsync();
-            return _mapper.Map<List<MediaItemVM>>(mediaItems);
+            var items= _mapper.Map<List<MediaItemVM>>(mediaItems);
+            var pagedList = new PagedList<MediaItemVM>(items, page, pageSize);
+            return pagedList;
         }
         public async Task<MediaItemVM> UpdateMediaItemAsync(MediaItemRequestVM model)
         {
@@ -99,13 +101,15 @@ namespace ElPlatform.BAL.Services
 
 
         //Media Type services
-        public async Task<List<MediaTypeVM>> GetMediaTypesAsync()
+        public async Task<PagedList<MediaTypeVM>> GetMediaTypesAsync(int page = 1, int pageSize = 5)
         {
             var mediaTypes = await (from p in _db.MediaTypes
                                     where p.IsActive
                                     orderby p.CreatedDate descending
                                     select p).ToArrayAsync();
-            return _mapper.Map<List<MediaTypeVM>>(mediaTypes);
+            var items= _mapper.Map<List<MediaTypeVM>>(mediaTypes);
+            var pagedList = new PagedList<MediaTypeVM>(items, page, pageSize);
+            return pagedList;
         }
         public async Task<MediaTypeVM> GetMediaTypeByIdAsync(int Id)
         {
@@ -164,13 +168,15 @@ namespace ElPlatform.BAL.Services
         }
 
         //Media Item Category
-        public async Task<List<MediaItemCategoryVM>> GetMediaItemCategoriesAsync()
+        public async Task<PagedList<MediaItemCategoryVM>> GetMediaItemCategoriesAsync(int page = 1, int pageSize = 5)
         {
             var mediaItemCategories = await(from p in _db.MediaItemCategories
                                    where p.IsActive
                                    orderby p.CreatedDate descending
                                    select p).ToArrayAsync();
-            return _mapper.Map<List<MediaItemCategoryVM>>(mediaItemCategories);
+            var items= _mapper.Map<List<MediaItemCategoryVM>>(mediaItemCategories);
+            var pagedList = new PagedList<MediaItemCategoryVM>(items, page, pageSize);
+            return pagedList;
         }
 
         public async Task<MediaItemCategoryVM> GetMediaItemCategoryByIdAsync(int Id)
