@@ -119,12 +119,19 @@ namespace ElPlatform.BAL.Services
 
             return _mapper.Map<MediaTypeVM>(mediaType);
         }
-        public async Task<MediaTypeVM> AddMediaTypeAsync(MediaTypeVM model)
+        public async Task<MediaTypeVM> AddMediaTypeAsync(MediaTypeRequestVM model)
         {
             using (var ts = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
 
-                var mediaType = _mapper.Map<MediaType>(model);
+                var mediaType = new MediaType();
+                mediaType.NameEn = model.NameEn;
+                mediaType.NameAr = model.NameAr;
+                mediaType.IsActive = model.IsActive;
+                mediaType.CreatedBy = _identity.UserId;
+                mediaType.CreatedDate = DateTime.UtcNow;
+                mediaType.ModifiedBy = _identity.UserId;
+                mediaType.ModifiedDate = DateTime.UtcNow;
                 await _db.MediaTypes.AddAsync(mediaType);
                 await _db.SaveChangesAsync();
 
@@ -170,15 +177,49 @@ namespace ElPlatform.BAL.Services
         //Media Item Category
         public async Task<PagedList<MediaItemCategoryVM>> GetMediaItemCategoriesAsync(int page = 1, int pageSize = 5)
         {
+            var items = new List<MediaItemCategoryVM>();
             var mediaItemCategories = await(from p in _db.MediaItemCategories
                                    where p.IsActive
                                    orderby p.CreatedDate descending
                                    select p).ToArrayAsync();
-            var items= _mapper.Map<List<MediaItemCategoryVM>>(mediaItemCategories);
+            foreach (var item in mediaItemCategories)
+            {
+                items.Add(new MediaItemCategoryVM{
+                Id=item.Id,
+                NameAr=item.NameAr,
+                NameEn=item.NameEn,
+                IsActive=item.IsActive,
+                ParantId=item.ParantId,
+                ParantNameAr=item?.ParantCategory?.NameAr,
+                ParantNameEn=item?.ParantCategory?.NameEn
+                });
+            };
             var pagedList = new PagedList<MediaItemCategoryVM>(items, page, pageSize);
             return pagedList;
         }
-
+        public async Task<List<MediaItemCategoryVM>> GetMediaItemMainCategoriesAsync()
+        {
+            var items = new List<MediaItemCategoryVM>();
+            var mediaItemCategories = await (from p in _db.MediaItemCategories
+                                             where p.IsActive && p.ParantId==null
+                                             orderby p.CreatedDate descending
+                                             select p).ToArrayAsync();
+            foreach (var item in mediaItemCategories)
+            {
+                items.Add(new MediaItemCategoryVM
+                {
+                    Id = item.Id,
+                    NameAr = item.NameAr,
+                    NameEn = item.NameEn,
+                    IsActive = item.IsActive,
+                    ParantId = item.ParantId,
+                    ParantNameAr = item?.ParantCategory?.NameAr,
+                    ParantNameEn = item?.ParantCategory?.NameEn
+                });
+            };
+            return items;
+         
+        }
         public async Task<MediaItemCategoryVM> GetMediaItemCategoryByIdAsync(int Id)
         {
             var mediaItemCategory = await _db.MediaItemCategories.FindAsync(Id);
@@ -193,7 +234,24 @@ namespace ElPlatform.BAL.Services
             using (var ts = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
 
-                var mediaItemCategory = _mapper.Map<MediaItemCategory>(model);
+                var mediaItemCategory = new MediaItemCategory();
+                mediaItemCategory.Id = model.Id;
+                mediaItemCategory.NameAr = model.NameAr;
+                mediaItemCategory.NameEn = model.NameEn;
+                mediaItemCategory.IsActive = model.IsActive;
+                if (model.ParantId==0)
+                {
+                    mediaItemCategory.ParantId = null;
+                }
+                else
+                {
+                    mediaItemCategory.ParantId = model.ParantId;
+                }
+              
+                mediaItemCategory.CreatedBy = _identity.UserId;
+                mediaItemCategory.CreatedDate = DateTime.UtcNow;
+                mediaItemCategory.ModifiedBy = _identity.UserId;
+                mediaItemCategory.ModifiedDate = DateTime.UtcNow;
                 await _db.MediaItemCategories.AddAsync(mediaItemCategory);
                 await _db.SaveChangesAsync();
 

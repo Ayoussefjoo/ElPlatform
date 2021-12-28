@@ -1,0 +1,123 @@
+﻿@namespace ElPlatform.App.Components
+@*@if (_isBusy)
+{
+<MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="200px" Height="110px" />
+}
+else
+{*@
+<MudIconButton Icon="@Icons.Material.Filled.Add" Color="Color.Primary" aria-label="Add" OnClick="OpenDialog">أضافة تصنيف</MudIconButton>
+<MudTable Items="@_mediaCategories.Take(5)" Hover="true" LoadingProgressColor="Color.Info">
+    <HeaderContent>
+        <MudTh>رقم</MudTh>
+        <MudTh>الاسم الانجليزى</MudTh>
+        <MudTh>الاسم العربى</MudTh>
+        <MudTh>التصنيف الرئيسى (E)</MudTh>
+        <MudTh>التصنيف الرئيسى (ع)</MudTh>
+        <MudTh>نشط</MudTh>
+        <MudTh>....</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Id">@context.Id</MudTd>
+        <MudTd DataLabel="NameEn">@context.NameEn</MudTd>
+        <MudTd DataLabel="NameAr">@context.NameAr</MudTd>
+        <MudTd DataLabel="PNameEn">@context.ParantNameEn</MudTd>
+        <MudTd DataLabel="PNameAr">@context.ParantNameAr</MudTd>
+        <MudTd DataLabel="IsActive">
+            @if (context.IsActive == true)
+                    {
+            <MudChip Icon="@Icons.Rounded.Check" Label="true" Color="Color.Primary"></MudChip>
+                    }
+                    else
+                    {
+            <MudChip Icon="@Icons.Rounded.Clear" Label="true" Color="Color.Primary"></MudChip>
+                    }
+        </MudTd>
+        <MudTd>
+            <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" aria-label="edit" OnClick="(()=>EditItem(context,true))"></MudIconButton>
+            <MudIconButton Icon="@Icons.Material.Filled.Delete" aria-label="delete" OnClick="(()=>DeleteMediaCategoryAsync(context.Id))"></MudIconButton>
+        </MudTd>
+    </RowTemplate>
+</MudTable>
+@*}*@
+
+<MudDialog @bind-IsVisible="visible">
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            <MudIcon Icon="@Icons.Material.Filled.Edit" Class="mr-3" /> التصنيفات
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        @if (_isEdit)
+        {
+        <EditForm Model="_model" OnValidSubmit="UpdateMediaCategoryAsync">
+            <FluentValidationValidator />
+            <MudCard>
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.body2">تعديل تصنيف ميديا</MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudTextField Label="الاسم النجليزى" Class="mt-3" HelperText="Requierd"
+                                  @bind-Value="_model.NameEn" />
+                    <MudTextField Label="الاسم العربى" Class="mt-3" HelperText="Requierd"
+                                  @bind-Value="_model.NameAr" />
+                    <MudSelect  @bind-Value="_model.ParantId" Label="التصنيف الرئيسى" Strict="true" Variant="Variant.Outlined" Format="F2" AnchorOrigin="Origin.BottomCenter">
+                        @foreach (var item in _mainCategories)
+                            {
+                        <MudSelectItem Value="@item.Id">@item.NameAr</MudSelectItem>
+                            }
+                    </MudSelect>
+                    <MudCheckBox @bind-Checked="@_model.IsActive" Color="Color.Secondary">نشط</MudCheckBox>
+                    <ValidationSummary />
+                    @if (!string.IsNullOrWhiteSpace(_errorMessage))
+                        {
+                    <MudAlert Severity="Severity.Error" Class="my-2" Variant="Variant.Filled">@_errorMessage</MudAlert>
+                        }
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary"  Style="margin-right:50%">تعديل</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </EditForm>
+        }
+        else
+        {
+        <EditForm Model="_model" OnValidSubmit="AddMediaCategoryAsync">
+            <FluentValidationValidator />
+            <MudCard>
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.body2">أضافة تصنيف ميديا</MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudTextField Label="الاسم الانجليزى" Class="mt-3" HelperText="Requierd"
+                                  @bind-Value="_model.NameEn" />
+                    <MudTextField Label="الاسم العربى" Class="mt-3" HelperText="Requierd"
+                                  @bind-Value="_model.NameAr" />
+                    <MudSelect  Label="التصنيف الرئيسى" @bind-Value="_model.ParantId" Strict="true" Variant="Variant.Outlined" Format="F2" AnchorOrigin="Origin.BottomCenter">
+                        @foreach (var item in _mainCategories)
+                            {
+                        <MudSelectItem Value="@item.Id">@item.NameAr</MudSelectItem>
+                            }
+                    </MudSelect>
+                    <MudCheckBox @bind-Checked="@_model.IsActive" Color="Color.Secondary">نشط</MudCheckBox>
+                    <ValidationSummary />
+                    @if (!string.IsNullOrWhiteSpace(_errorMessage))
+                        {
+                    <MudAlert Severity="Severity.Error" Class="my-2" Variant="Variant.Filled">@_errorMessage</MudAlert>
+                        }
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary"  Style="margin-right:50%">أضافة</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </EditForm>
+        }
+
+    </DialogContent>
+</MudDialog>
+@code {
+
+}

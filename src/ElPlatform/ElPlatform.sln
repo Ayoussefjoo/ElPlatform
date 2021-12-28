@@ -13,9 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElPlatform.BAL", "ElPlatfor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElPlatform.App", "ElPlatform.App\ElPlatform.App.csproj", "{45410FF4-3628-440E-A9B7-A50BDFB28C79}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElPlatform.Shared", "ElPlatform.Shared\ElPlatform.Shared.csproj", "{48E3569E-3AFD-4156-8F6D-D6E4500E39B2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElPlatform.Shared", "ElPlatform.Shared\ElPlatform.Shared.csproj", "{48E3569E-3AFD-4156-8F6D-D6E4500E39B2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElPlatform.Client.Services", "ElPlatform.Client.Services\ElPlatform.Client.Services.csproj", "{B64F2850-1EF6-4125-89EB-5575D5BC6C53}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElPlatform.Client.Services", "ElPlatform.Client.Services\ElPlatform.Client.Services.csproj", "{B64F2850-1EF6-4125-89EB-5575D5BC6C53}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

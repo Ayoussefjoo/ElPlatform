@@ -50,7 +50,7 @@ namespace ElPlatform.API.Controllers
         [ProducesResponseType(200, Type = typeof(ApiResponse<MediaTypeVM>))]
         [ProducesResponseType(400, Type = typeof(ApiErrorResponse))]
         [HttpPost()]
-        public async Task<IActionResult> Post([FromForm] MediaTypeVM model)
+        public async Task<IActionResult> Post([FromBody] MediaTypeRequestVM model)
         {
             var result = await _mediaService.AddMediaTypeAsync(model);
 
@@ -60,7 +60,7 @@ namespace ElPlatform.API.Controllers
         [ProducesResponseType(200, Type = typeof(ApiResponse<MediaTypeVM>))]
         [ProducesResponseType(400, Type = typeof(ApiErrorResponse))]
         [HttpPut()]
-        public async Task<IActionResult> Put([FromForm] MediaTypeVM model)
+        public async Task<IActionResult> Put([FromBody] MediaTypeVM model)
         {
             var result = await _mediaService.UpdateMediaTypeAsync(model);
 

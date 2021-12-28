@@ -1,0 +1,24 @@
+﻿@namespace ElPlatform.App.Components
+<MudCard>
+    <MudCardHeader>
+        <CardHeaderContent>
+            <MudText Typo="Typo.body1">@MediaItem?.TitleEn</MudText>
+        </CardHeaderContent>
+    </MudCardHeader>
+    <MudCardContent>
+        <iframe src="@MediaItem?.URL">
+        </iframe>
+        <MudText Typo="Typo.body2">@MediaItem?.DescriptionEn</MudText>
+    </MudCardContent>
+    <MudCardActions>
+        <MudIconButton Icon="@Icons.Material.Filled.Preview" Color="Color.Success"
+                       OnClick="async()=>await OnViewClicked.InvokeAsync(MediaItem)"/>
+        <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Default" 
+                       OnClick="async()=>await OnEditClicked.InvokeAsync(MediaItem)"/>
+        <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" 
+                       OnClick="async()=>await OnDeleteClicked.InvokeAsync(MediaItem)"/>
+    </MudCardActions>
+</MudCard>
+@code{
+   
+}

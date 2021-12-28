@@ -77,9 +77,9 @@ namespace ElPlatform.API
             {
                 options.AddPolicy("CorsPolicy", policy =>
                 {
-                    policy.WithOrigins("http://joocode-001-site1.itempurl.com").AllowAnyHeader().AllowAnyMethod();
-                    //policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
-                });
+                    //policy.WithOrigins("http://joocode-001-site1.itempurl.com").AllowAnyHeader().AllowAnyMethod();
+                    policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                }); 
             });
 
             // Auto Mapper Configurations

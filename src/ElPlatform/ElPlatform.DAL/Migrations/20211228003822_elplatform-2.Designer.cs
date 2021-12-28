@@ -4,14 +4,16 @@ using ElPlatform.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ElPlatform.DAL.Migrations
 {
     [DbContext(typeof(ElPlatformDbContext))]
-    partial class ElPlatformDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211228003822_elplatform-2")]
+    partial class elplatform2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -183,9 +185,12 @@ namespace ElPlatform.DAL.Migrations
                     b.Property<int?>("ParantId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ParantMediaItemCategoryId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("ParantId");
+                    b.HasIndex("ParantMediaItemCategoryId");
 
                     b.ToTable("MediaItemCategories");
                 });
@@ -377,11 +382,11 @@ namespace ElPlatform.DAL.Migrations
 
             modelBuilder.Entity("ElPlatform.DAL.Model.MediaItemCategory", b =>
                 {
-                    b.HasOne("ElPlatform.DAL.Model.MediaItemCategory", "ParantCategory")
+                    b.HasOne("ElPlatform.DAL.Model.MediaItemCategory", "ParantMediaItemCategory")
                         .WithMany()
-                        .HasForeignKey("ParantId");
+                        .HasForeignKey("ParantMediaItemCategoryId");
 
-                    b.Navigation("ParantCategory");
+                    b.Navigation("ParantMediaItemCategory");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

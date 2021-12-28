@@ -23,6 +23,7 @@ namespace ElPlatform.App
             builder.RootComponents.Add<App>("#app");
             builder.Services.AddHttpClient("ElPlatformApp.Api",client=> {
                 client.BaseAddress = new Uri("http://joocode-001-site3.itempurl.com");
+
             }).AddHttpMessageHandler<AuthorizationMessageHandler>();
             builder.Services.AddTransient<AuthorizationMessageHandler>();
             builder.Services.AddScoped(sp => sp.GetService<IHttpClientFactory>().CreateClient("ElPlatformApp.Api"));

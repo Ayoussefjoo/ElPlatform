@@ -1,13 +1,26 @@
 ﻿@inherits LayoutComponentBase
 
-<MudLayout>
-    <MudAppBar Elevation="1">
-        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
-        <MudText Typo="Typo.h5" Class="ml-3">ElPlatform</MudText>
-        <MudAppBarSpacer />
-        <LoginDisplay />
-    </MudAppBar>
-   
+
+<MudLayout RightToLeft="true">
+    <AuthorizeView>
+        <Authorized>
+            <MudAppBar Elevation="1" Style="background-color: #e4b228 !important">
+                <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e)=>DrawerToggle())" />
+                <MudText Typo="Typo.h5" Class="ml-3" Style="color: #772145">البلاتفورم</MudText>
+                <MudAppBarSpacer />
+                <LoginDisplay />
+            </MudAppBar>
+            <MudBlazor.MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
+                <NavMenu />
+            </MudBlazor.MudDrawer>
+        </Authorized>
+        <NotAuthorized>
+            <MudAppBar Elevation="1" Style="background-color: #e4b228 !important">
+                <MudText Typo="Typo.h5" Class="ml-3" Style="color: #772145">البلاتفورم</MudText>
+                <LoginDisplay />
+            </MudAppBar>
+        </NotAuthorized>
+    </AuthorizeView>
     <MudMainContent>
         @Body
     </MudMainContent>

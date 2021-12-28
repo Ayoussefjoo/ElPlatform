@@ -1,15 +1,3 @@
 ﻿@page "/"
-@layout AnonymousLayout
-   
-        <AuthorizeView>
-            <Authorized>
-                <HomeForm />
-            </Authorized>
-            <NotAuthorized>
-                <HomeForm />
-            </NotAuthorized>
-        </AuthorizeView>
-        @code{
-            [CascadingParameter]
-            public Task<AuthenticationState> AuthState { get; set; }
-        }*
+@layout MainLayout
+    <HomeForm />

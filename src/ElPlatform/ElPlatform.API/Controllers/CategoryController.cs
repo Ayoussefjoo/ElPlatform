@@ -35,6 +35,15 @@ namespace ElPlatform.API.Controllers
 
             return Ok(new ApiResponse<PagedList<MediaItemCategoryVM>>(result, "Media Item Categories retrieved successfully"));
         }
+        [HttpGet("GetMIMCatigories")]
+        [ProducesResponseType(200, Type = typeof(ApiResponse<List<MediaItemCategoryVM>>))]
+        [ProducesResponseType(400, Type = typeof(ApiErrorResponse))]
+        public async Task<IActionResult> GetGetMIMCatigoriesAsync()
+        {
+            var result = await _mediaService.GetMediaItemMainCategoriesAsync();
+
+            return Ok(new ApiResponse<List<MediaItemCategoryVM>>(result, "Media Item Categories retrieved successfully"));
+        }
 
         [ProducesResponseType(200, Type = typeof(ApiResponse<MediaItemCategoryVM>))]
         [ProducesResponseType(400, Type = typeof(ApiErrorResponse))]
@@ -49,7 +58,7 @@ namespace ElPlatform.API.Controllers
         [ProducesResponseType(200, Type = typeof(ApiResponse<MediaItemCategoryVM>))]
         [ProducesResponseType(400, Type = typeof(ApiErrorResponse))]
         [HttpPost()]
-        public async Task<IActionResult> Post([FromForm] MediaItemCategoryVM model)
+        public async Task<IActionResult> Post([FromBody] MediaItemCategoryVM model)
         {
             var result = await _mediaService.AddMediaItemCategoryAsync(model);
 
@@ -59,7 +68,7 @@ namespace ElPlatform.API.Controllers
         [ProducesResponseType(200, Type = typeof(ApiResponse<MediaItemCategoryVM>))]
         [ProducesResponseType(400, Type = typeof(ApiErrorResponse))]
         [HttpPut()]
-        public async Task<IActionResult> Put([FromForm] MediaItemCategoryVM model)
+        public async Task<IActionResult> Put([FromBody] MediaItemCategoryVM model)
         {
             var result = await _mediaService.UpdateMediaItemCategoryAsync(model);
 

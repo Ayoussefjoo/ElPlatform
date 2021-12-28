@@ -16,6 +16,8 @@ namespace ElPlatform.BAL.ViewModels
         public string CreatedBy { get; set; }
         public DateTime ModifiedDate { get; set; }
         public string ModifiedBy { get; set; }
-        public int ParantId { get; set; }
+        public int? ParantId { get; set; }
+        public string ParantNameAr { get; set; }
+        public string ParantNameEn { get; set; }
     }
 }

@@ -1,4 +1,11 @@
-﻿@layout AnonymousLayout
-@code {
+﻿    <AuthorizeView>
+        <Authorized>
+            <UserHomeForm/>
+        </Authorized>
+        <NotAuthorized>
+            <HomeForm/>
+        </NotAuthorized>
+    </AuthorizeView>
+    @code {
 
-}
+    }

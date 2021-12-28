@@ -4,24 +4,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ElPlatform.BAL.ViewModels
+namespace ElPlatform.Shared.Models
 {
-    public class MediaTypeVM
+    public class MediaCategoryObjVM
     {
         public int Id { get; set; }
         public string NameEn { get; set; }
         public string NameAr { get; set; }
+        public string ParantNameAr { get; set; }
+        public string ParantNameEn { get; set; }
         public bool IsActive { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public string CreatedBy { get; set; }
-        public DateTime ModifiedDate { get; set; }
-        public string ModifiedBy { get; set; }
+        public int? ParantId { get; set; }
+        public MediaCategoryObjVM ParantItem { get; set; }
+        
     }
-    public class MediaTypeRequestVM
+    public class MediaCategoryRequestVM
     {
         public int Id { get; set; }
         public string NameEn { get; set; }
         public string NameAr { get; set; }
         public bool IsActive { get; set; }
+        public int ParantId { get; set; }
     }
 }
