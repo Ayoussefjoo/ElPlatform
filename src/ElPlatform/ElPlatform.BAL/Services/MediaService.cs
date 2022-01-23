@@ -173,6 +173,15 @@ namespace ElPlatform.BAL.Services
                 return result;
             }
         }
+        public async Task<List<MediaTypeVM>> GetAllMediaTypesAsync()
+        {
+            var mediaTypes = await (from p in _db.MediaTypes
+                                    where p.IsActive
+                                    orderby p.CreatedDate descending
+                                    select p).ToArrayAsync();
+            var items = _mapper.Map<List<MediaTypeVM>>(mediaTypes);
+            return items;
+        }
 
         //Media Item Category
         public async Task<PagedList<MediaItemCategoryVM>> GetMediaItemCategoriesAsync(int page = 1, int pageSize = 5)
@@ -219,6 +228,28 @@ namespace ElPlatform.BAL.Services
             };
             return items;
          
+        }
+        public async Task<List<MediaItemCategoryVM>> GetMediaSubCategoriesAsync(int mainCategoryId)
+        {
+            var items = new List<MediaItemCategoryVM>();
+            var mediaItemCategories = await (from p in _db.MediaItemCategories
+                                             where p.IsActive && p.ParantId == mainCategoryId
+                                             orderby p.CreatedDate descending
+                                             select p).ToArrayAsync();
+            foreach (var item in mediaItemCategories)
+            {
+                items.Add(new MediaItemCategoryVM
+                {
+                    Id = item.Id,
+                    NameAr = item.NameAr,
+                    NameEn = item.NameEn,
+                    IsActive = item.IsActive,
+                    ParantId = item.ParantId,
+                    ParantNameAr = item?.ParantCategory?.NameAr,
+                    ParantNameEn = item?.ParantCategory?.NameEn
+                });
+            };
+            return items;
         }
         public async Task<MediaItemCategoryVM> GetMediaItemCategoryByIdAsync(int Id)
         {

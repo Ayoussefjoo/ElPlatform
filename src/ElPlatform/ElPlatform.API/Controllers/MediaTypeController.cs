@@ -2,6 +2,7 @@
 using ElPlatform.BAL.IServices;
 using ElPlatform.BAL.Options;
 using ElPlatform.BAL.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -30,6 +31,7 @@ namespace ElPlatform.API.Controllers
         [HttpGet("GetMTypes")]
         [ProducesResponseType(200, Type = typeof(ApiResponse<PagedList<MediaTypeVM>>))]
         [ProducesResponseType(400, Type = typeof(ApiErrorResponse))]
+        [Authorize]
         public async Task<IActionResult> GetMediaTypesAsync(int pageNumber, int pageSize)
         {
             var result = await _mediaService.GetMediaTypesAsync(pageNumber,pageSize);
@@ -37,9 +39,22 @@ namespace ElPlatform.API.Controllers
             return Ok(new ApiResponse<PagedList<MediaTypeVM>>(result, "MediaTypes retrieved successfully"));
         }
 
+        // /api/media/GetAllTypes
+        [HttpGet("GetAllTypes")]
+        [ProducesResponseType(200, Type = typeof(ApiResponse<List<MediaTypeVM>>))]
+        [ProducesResponseType(400, Type = typeof(ApiErrorResponse))]
+        [Authorize]
+        public async Task<IActionResult> GetMediaAllTypesAsync()
+        {
+            var result = await _mediaService.GetAllMediaTypesAsync();
+
+            return Ok(new ApiResponse<List<MediaTypeVM>>(result, "MediaTypes retrieved successfully"));
+        }
+
         [ProducesResponseType(200, Type = typeof(ApiResponse<MediaTypeVM>))]
         [ProducesResponseType(400, Type = typeof(ApiErrorResponse))]
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<IActionResult> Get(int id)
         {
             var result = await _mediaService.GetMediaTypeByIdAsync(id);
@@ -50,6 +65,7 @@ namespace ElPlatform.API.Controllers
         [ProducesResponseType(200, Type = typeof(ApiResponse<MediaTypeVM>))]
         [ProducesResponseType(400, Type = typeof(ApiErrorResponse))]
         [HttpPost()]
+        [Authorize]
         public async Task<IActionResult> Post([FromBody] MediaTypeRequestVM model)
         {
             var result = await _mediaService.AddMediaTypeAsync(model);
@@ -60,6 +76,7 @@ namespace ElPlatform.API.Controllers
         [ProducesResponseType(200, Type = typeof(ApiResponse<MediaTypeVM>))]
         [ProducesResponseType(400, Type = typeof(ApiErrorResponse))]
         [HttpPut()]
+        [Authorize]
         public async Task<IActionResult> Put([FromBody] MediaTypeVM model)
         {
             var result = await _mediaService.UpdateMediaTypeAsync(model);
@@ -70,6 +87,7 @@ namespace ElPlatform.API.Controllers
         [ProducesResponseType(200, Type = typeof(ApiResponse))]
         [ProducesResponseType(400, Type = typeof(ApiErrorResponse))]
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
             await _mediaService.DeleteMediaTypeAsync(id);

@@ -105,6 +105,20 @@ namespace ElPlatform.Client.Services
             }
         }
 
+        public async Task<ApiResponse<List<MediaTypeObjVM>>> GetAllTypesAsync()
+        {
+            var response = await _client.GetAsync($"/api/MediaType/GetAllTypes");
+            if (response.IsSuccessStatusCode)
+            {
+                var result = await response.Content.ReadFromJsonAsync<ApiResponse<List<MediaTypeObjVM>>>();
+                return result;
+            }
+            else
+            {
+                var errorResult = await response.Content.ReadFromJsonAsync<ApiErrorResponse>();
+                throw new ApiException(errorResult, response.StatusCode);
+            }
+        }
         public async Task<ApiResponse> DeleteMediaCategoryAsync(int Id)
         {
             var response = await _client.DeleteAsync($"/api/Category/{Id}");
@@ -156,6 +170,64 @@ namespace ElPlatform.Client.Services
             if (response.IsSuccessStatusCode)
             {
                 var result = await response.Content.ReadFromJsonAsync<ApiResponse<List<MediaCategoryObjVM>>>();
+                return result;
+            }
+            else
+            {
+                var errorResult = await response.Content.ReadFromJsonAsync<ApiErrorResponse>();
+                throw new ApiException(errorResult, response.StatusCode);
+            }
+        }
+        public async Task<ApiResponse<List<MediaCategoryObjVM>>> GetMainMISCategoriesAsync(int mainCategoryId)
+        {
+            var response = await _client.GetAsync($"/api/Category/GetMISCatigories?mainId={mainCategoryId}");
+            if (response.IsSuccessStatusCode)
+            {
+                var result = await response.Content.ReadFromJsonAsync<ApiResponse<List<MediaCategoryObjVM>>>();
+                return result;
+            }
+            else
+            {
+                var errorResult = await response.Content.ReadFromJsonAsync<ApiErrorResponse>();
+                throw new ApiException(errorResult, response.StatusCode);
+            }
+        }
+
+        public async Task<ApiResponse<MediaItemObjVM>> AddMediaItemAsync(MediaItemRequest model)
+        {
+            var response = await _client.PostAsJsonAsync($"/api/Media/", model);
+            if (response.IsSuccessStatusCode)
+            {
+                var result = await response.Content.ReadFromJsonAsync<ApiResponse<MediaItemObjVM>>();
+                return result;
+            }
+            else
+            {
+                var errorResult = await response.Content.ReadFromJsonAsync<ApiErrorResponse>();
+                throw new ApiException(errorResult, response.StatusCode);
+            }
+        }
+
+        public async Task<ApiResponse<MediaItemObjVM>> UpdateMediaItemAsync(MediaItemRequest model)
+        {
+            var response = await _client.PutAsJsonAsync($"/api/Media/", model);
+            if (response.IsSuccessStatusCode)
+            {
+                var result = await response.Content.ReadFromJsonAsync<ApiResponse<MediaItemObjVM>>();
+                return result;
+            }
+            else
+            {
+                var errorResult = await response.Content.ReadFromJsonAsync<ApiErrorResponse>();
+                throw new ApiException(errorResult, response.StatusCode);
+            }
+        }
+        public async Task<ApiResponse> DeleteMediaItemAsync(int Id)
+        {
+            var response = await _client.DeleteAsync($"/api/Media/{Id}");
+            if (response.IsSuccessStatusCode)
+            {
+                var result = await response.Content.ReadFromJsonAsync<ApiResponse>();
                 return result;
             }
             else

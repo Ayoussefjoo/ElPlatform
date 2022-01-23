@@ -1,6 +1,4 @@
 ﻿@inherits LayoutComponentBase
-
-
 <MudLayout RightToLeft="true">
     <AuthorizeView>
         <Authorized>
@@ -19,6 +17,13 @@
                 <MudText Typo="Typo.h5" Class="ml-3" Style="color: #772145">البلاتفورم</MudText>
                 <LoginDisplay />
             </MudAppBar>
+            <MudBlazor.MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
+                <MudNavMenu>
+                    <MudNavLink Href="/Media">الفيديو</MudNavLink>
+                    <MudNavLink Href="/Media/Categories">المقالات</MudNavLink>
+                    <MudNavLink Href="/Media/Types">البرامج</MudNavLink>
+                </MudNavMenu>
+            </MudBlazor.MudDrawer>
         </NotAuthorized>
     </AuthorizeView>
     <MudMainContent>

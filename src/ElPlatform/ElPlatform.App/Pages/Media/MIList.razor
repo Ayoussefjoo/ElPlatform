@@ -1,0 +1,11 @@
+﻿@page "/Media"
+@layout MainLayout
+<AuthorizeView>
+    <Authorized>
+        <MediaList />
+    </Authorized>
+    <NotAuthorized>
+        You are not Authorized to access that page 
+    </NotAuthorized>
+</AuthorizeView>
+

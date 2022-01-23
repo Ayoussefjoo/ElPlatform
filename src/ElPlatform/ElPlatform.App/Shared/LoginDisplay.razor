@@ -2,6 +2,7 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject NavigationManager Navigation
 @using System.Security.Claims
+
 <AuthorizeView>
     <Authorized>
         <MudMenu Icon="@Icons.Material.Filled.Person" Color="Color.Primary" Direction="Direction.Right" OffsetY="true">
@@ -10,6 +11,7 @@
         </MudMenu>
     </Authorized>
     <NotAuthorized>
+
         <MudIconButton Icon="@Icons.Material.Filled.Login" Style="margin-left: 80%" Color="Color.Secondary" OnClick='()=>Navigation.NavigateTo("/auth/login")' />
     </NotAuthorized>
 </AuthorizeView>

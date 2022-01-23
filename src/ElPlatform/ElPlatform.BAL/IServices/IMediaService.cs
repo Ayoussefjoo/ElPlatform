@@ -24,6 +24,7 @@ namespace ElPlatform.BAL.IServices
         Task<MediaTypeVM> AddMediaTypeAsync(MediaTypeRequestVM model);
         Task DeleteMediaTypeAsync(int Id);
         Task<MediaTypeVM> UpdateMediaTypeAsync(MediaTypeVM model);
+        Task<List<MediaTypeVM>> GetAllMediaTypesAsync();
 
         //media item category
         Task<PagedList<MediaItemCategoryVM>> GetMediaItemCategoriesAsync(int page, int pageSize);
@@ -32,5 +33,6 @@ namespace ElPlatform.BAL.IServices
         Task DeleteMediaItemCategoryAsync(int Id);
         Task<MediaItemCategoryVM> UpdateMediaItemCategoryAsync(MediaItemCategoryVM model);
         Task<List<MediaItemCategoryVM>> GetMediaItemMainCategoriesAsync();
+        Task<List<MediaItemCategoryVM>> GetMediaSubCategoriesAsync(int mainCategoryId);
     }
 }

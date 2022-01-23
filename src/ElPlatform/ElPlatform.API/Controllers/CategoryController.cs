@@ -1,6 +1,7 @@
 ﻿using ElPlatform.BAL.IServices;
 using ElPlatform.BAL.Options;
 using ElPlatform.BAL.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -29,15 +30,18 @@ namespace ElPlatform.API.Controllers
         [HttpGet("GetMICatigories")]
         [ProducesResponseType(200, Type = typeof(ApiResponse<PagedList<MediaItemCategoryVM>>))]
         [ProducesResponseType(400, Type = typeof(ApiErrorResponse))]
+        [Authorize]
         public async Task<IActionResult> GetGetMICatigoriesAsync(int pageNumber, int pageSize)
         {
-            var result = await _mediaService.GetMediaItemCategoriesAsync(pageNumber,pageSize);
+            var result = await _mediaService.GetMediaItemCategoriesAsync(pageNumber, pageSize);
 
             return Ok(new ApiResponse<PagedList<MediaItemCategoryVM>>(result, "Media Item Categories retrieved successfully"));
         }
+
         [HttpGet("GetMIMCatigories")]
         [ProducesResponseType(200, Type = typeof(ApiResponse<List<MediaItemCategoryVM>>))]
         [ProducesResponseType(400, Type = typeof(ApiErrorResponse))]
+        [Authorize]
         public async Task<IActionResult> GetGetMIMCatigoriesAsync()
         {
             var result = await _mediaService.GetMediaItemMainCategoriesAsync();
@@ -45,9 +49,21 @@ namespace ElPlatform.API.Controllers
             return Ok(new ApiResponse<List<MediaItemCategoryVM>>(result, "Media Item Categories retrieved successfully"));
         }
 
+        [HttpGet("GetMISCatigories")]
+        [ProducesResponseType(200, Type = typeof(ApiResponse<List<MediaItemCategoryVM>>))]
+        [ProducesResponseType(400, Type = typeof(ApiErrorResponse))]
+        [Authorize]
+        public async Task<IActionResult> GetGetMIMCatigoriesAsync(int mainId)
+        {
+            var result = await _mediaService.GetMediaSubCategoriesAsync(mainId);
+
+            return Ok(new ApiResponse<List<MediaItemCategoryVM>>(result, "Media Item Categories retrieved successfully"));
+        }
+
         [ProducesResponseType(200, Type = typeof(ApiResponse<MediaItemCategoryVM>))]
         [ProducesResponseType(400, Type = typeof(ApiErrorResponse))]
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<IActionResult> Get(int id)
         {
             var result = await _mediaService.GetMediaItemCategoryByIdAsync(id);
@@ -58,6 +74,7 @@ namespace ElPlatform.API.Controllers
         [ProducesResponseType(200, Type = typeof(ApiResponse<MediaItemCategoryVM>))]
         [ProducesResponseType(400, Type = typeof(ApiErrorResponse))]
         [HttpPost()]
+        [Authorize]
         public async Task<IActionResult> Post([FromBody] MediaItemCategoryVM model)
         {
             var result = await _mediaService.AddMediaItemCategoryAsync(model);
@@ -68,6 +85,7 @@ namespace ElPlatform.API.Controllers
         [ProducesResponseType(200, Type = typeof(ApiResponse<MediaItemCategoryVM>))]
         [ProducesResponseType(400, Type = typeof(ApiErrorResponse))]
         [HttpPut()]
+        [Authorize]
         public async Task<IActionResult> Put([FromBody] MediaItemCategoryVM model)
         {
             var result = await _mediaService.UpdateMediaItemCategoryAsync(model);
@@ -78,6 +96,7 @@ namespace ElPlatform.API.Controllers
         [ProducesResponseType(200, Type = typeof(ApiResponse))]
         [ProducesResponseType(400, Type = typeof(ApiErrorResponse))]
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
             await _mediaService.DeleteMediaItemCategoryAsync(id);

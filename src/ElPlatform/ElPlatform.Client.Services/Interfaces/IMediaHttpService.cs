@@ -16,9 +16,14 @@ namespace ElPlatform.Client.Services.Interfaces
         Task<ApiResponse> DeleteMediaTypeAsync(int Id);
         Task<ApiResponse<MediaTypeObjVM>> AddMediaTypeAsync(MediaTypeRequest model);
         Task<ApiResponse<MediaTypeObjVM>> UpdateMediaTypeAsync(MediaTypeRequest model);
+        Task<ApiResponse<List<MediaTypeObjVM>>> GetAllTypesAsync();
         Task<ApiResponse> DeleteMediaCategoryAsync(int Id);
         Task<ApiResponse<MediaCategoryObjVM>> AddMediaCategoryAsync(MediaCategoryRequestVM model);
         Task<ApiResponse<MediaCategoryObjVM>> UpdateMediaCategoryAsync(MediaCategoryRequestVM model);
         Task<ApiResponse<List<MediaCategoryObjVM>>> GetMainMICategoriesAsync();
+        Task<ApiResponse<List<MediaCategoryObjVM>>> GetMainMISCategoriesAsync(int mainCategoryId);
+        Task<ApiResponse<MediaItemObjVM>> AddMediaItemAsync(MediaItemRequest model);
+        Task<ApiResponse<MediaItemObjVM>> UpdateMediaItemAsync(MediaItemRequest model);
+        Task<ApiResponse> DeleteMediaItemAsync(int Id);
     }
 }

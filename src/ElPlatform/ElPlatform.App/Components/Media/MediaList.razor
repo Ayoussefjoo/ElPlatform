@@ -1,0 +1,186 @@
+﻿@namespace ElPlatform.App.Components
+    <style>
+        .mud-dialog {
+            width: 100% !important;
+        }
+        .mud-dialog-container.mud-dialog-center{
+            overflow-y:scroll;
+        }
+    </style>
+@if (_isBusy)
+{
+    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="200px" Height="110px" />
+}
+else
+{
+    <MudIconButton Icon="@Icons.Material.Filled.Add" Color="Color.Primary" aria-label="Add" OnClick="OpenDialog"></MudIconButton>
+    <MudTable Items="@_mediaItems.Take(5)" Hover="true" LoadingProgressColor="Color.Info">
+        <HeaderContent>
+            <MudTh>رقم</MudTh>
+            <MudTh>العنوان</MudTh>
+            <MudTh>التصنيف</MudTh>
+            <MudTh>النوع</MudTh>
+            <MudTh>الرابط</MudTh>
+            <MudTh>نشط</MudTh>
+            <MudTh>منشور</MudTh>
+            <MudTh>...</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Id">@context.Id</MudTd>
+            <MudTd DataLabel="NameEn">@context.TitleAr</MudTd>
+            <MudTd DataLabel="NameEn">...</MudTd>
+            <MudTd DataLabel="NameEn">...</MudTd>
+            <MudTd DataLabel="NameAr">@context.URL</MudTd>
+            <MudTd DataLabel="IsActive">
+                @if (context.IsActive == true)
+                    {
+                    <MudChip Icon="@Icons.Rounded.Check" Label="true" Color="Color.Primary"></MudChip>
+                    }
+                    else
+                    {
+                    <MudChip Icon="@Icons.Rounded.Clear" Label="true" Color="Color.Primary"></MudChip>
+                    }
+            </MudTd>
+            <MudTd DataLabel="IsActive">
+                @if (context.IsPublished == true)
+                    {
+                    <MudChip Icon="@Icons.Rounded.Check" Label="true" Color="Color.Primary"></MudChip>
+                    }
+                    else
+                    {
+                    <MudChip Icon="@Icons.Rounded.Clear" Label="true" Color="Color.Primary"></MudChip>
+                    }
+            </MudTd>
+            <MudTd>
+
+                <MudIconButton Icon="@Icons.Material.Filled.RemoveRedEye" aria-label="view" OnClick="(()=>ViewMediaItem(context.URL))"></MudIconButton>
+                <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" aria-label="edit" OnClick="(()=>EditItem(context,true))"></MudIconButton>
+                <MudIconButton Icon="@Icons.Material.Filled.Delete" aria-label="delete" OnClick="(()=>DeleteMediaItemAsync(context.Id))"></MudIconButton>
+            </MudTd>
+        </RowTemplate>
+    </MudTable>
+}
+<MudDialog @bind-IsVisible="visible">
+    <DialogContent>
+        @if (_isEdit)
+        {
+        <div>
+            <EditForm Model="_model" OnValidSubmit="UpdateMediaItemAsync">
+                <FluentValidationValidator />
+                <MudCard>
+                    
+                    <MudCardContent>
+                        <MudTextField Label="العنوان النجليزى" Class="mt-3" HelperText="Requierd"
+                                      @bind-Value="_model.TitleEn" />
+                        <MudTextField Label="الاسم العربى" Class="mt-3" HelperText="Requierd"
+                                      @bind-Value="_model.TitleAr" />
+                        <MudTextField Label="الرابط" Class="mt-3" HelperText="Requierd"
+                                      @bind-Value="_model.URL" />
+                        <MudTextField Label="الوصف الانجليزى" Class="mt-3" Lines="2" HelperText="Requierd"
+                                      @bind-Value="_model.DescriptionEn" />
+                        <MudTextField Label="الوصف العربى" Class="mt-3" HelperText="Requierd" Lines="2"
+                                      @bind-Value="_model.DescriptionAr" />
+                        <MudSelect @bind-Value="_model.MediaTypeId" Label="النوع" Strict="true" Variant="Variant.Outlined" Format="F2" AnchorOrigin="Origin.BottomCenter">
+                            @foreach (var type in _mediaTypes)
+                                {
+                                <MudSelectItem Value="@type.Id">@type.NameAr</MudSelectItem>
+                                }
+                        </MudSelect>
+                        <MudSelect T="int" @bind-Value="_selectedMainCategory " Label="التصنيف" Strict="true" Variant="Variant.Outlined" Format="F2" AnchorOrigin="Origin.BottomCenter" SelectedValuesChanged="(values) =>OnMainCategorySelected(values)">
+                            @foreach (var category in _mediaMainCategories)
+                            {
+                                <MudSelectItem Value="@category.Id">@category.NameAr</MudSelectItem>
+                            }
+                        </MudSelect>
+                        @if (_mediaSubCategories != null && _mediaSubCategories.Count > 0)
+                        {
+                            <MudSelect @bind-Value="_model.MediaCategoryId" Label="التصنيف" Strict="true" Variant="Variant.Outlined" Format="F2" AnchorOrigin="Origin.BottomCenter">
+                                @foreach (var category in _mediaSubCategories)
+                                        {
+                                    <MudSelectItem Value="@category.Id">@category.NameAr</MudSelectItem>
+                                        }
+                            </MudSelect>
+                        }
+                        <MudCheckBox @bind-Checked="@_model.IsPublished" Color="Color.Secondary">منشور</MudCheckBox>
+                        <MudCheckBox @bind-Checked="@_model.IsActive" Color="Color.Secondary">نشط</MudCheckBox>
+                        <ValidationSummary />
+                        @if (!string.IsNullOrWhiteSpace(_errorMessage))
+                        {
+                            <MudAlert Severity="Severity.Error" Class="my-2" Variant="Variant.Filled">@_errorMessage</MudAlert>
+                        }
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Style="margin-right:50%">تعديل</MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </EditForm>
+        </div>
+            }
+            else
+            {
+        <div >
+            <EditForm Model="_model" OnValidSubmit="AddMediaItemAsync">
+                <FluentValidationValidator />
+                <MudCard>
+                    
+                    <MudCardContent>
+                        <MudTextField Label="الاسم الانجليزى" Class="mt-3" HelperText="Requierd"
+                                      @bind-Value="_model.TitleEn" />
+                        <MudTextField Label="الاسم العربى" Class="mt-3" HelperText="Requierd"
+                                      @bind-Value="_model.TitleAr" />
+                        <MudTextField Label="الرابط" Class="mt-3" HelperText="Requierd"
+                                      @bind-Value="_model.URL" />
+                        <MudTextField Label="الوصف الانجليزى" Class="mt-3" Lines="2" HelperText="Requierd"
+                                      @bind-Value="_model.DescriptionEn" />
+                        <MudTextField Label="الوصف العربى" Class="mt-3" HelperText="Requierd" Lines="2"
+                                      @bind-Value="_model.DescriptionAr" />
+                        <MudSelect @bind-Value="_model.MediaTypeId" Label="النوع" Strict="true" Variant="Variant.Outlined" Format="F2" AnchorOrigin="Origin.BottomCenter">
+                            @foreach (var type in _mediaTypes)
+                                {
+                                <MudSelectItem Value="@type.Id">@type.NameAr</MudSelectItem>
+                                }
+                        </MudSelect>
+                        <MudSelect T="int" @bind-Value="_selectedMainCategory " Label="التصنيف" Strict="true" Variant="Variant.Outlined" Format="F2" AnchorOrigin="Origin.BottomCenter" SelectedValuesChanged="(values) =>OnMainCategorySelected(values)">
+                            @foreach (var category in _mediaMainCategories)
+                            {
+                                <MudSelectItem Value="@category.Id">@category.NameAr</MudSelectItem>
+                            }
+                        </MudSelect>
+                        @if (_mediaSubCategories != null && _mediaSubCategories.Count > 0)
+                        {
+                            <MudSelect @bind-Value="_model.MediaCategoryId" Label="التصنيف" Strict="true" Variant="Variant.Outlined" Format="F2" AnchorOrigin="Origin.BottomCenter">
+                                @foreach (var category in _mediaSubCategories)
+                                        {
+                                    <MudSelectItem Value="@category.Id">@category.NameAr</MudSelectItem>
+                                        }
+                            </MudSelect>
+                        }
+                        <MudCheckBox @bind-Checked="@_model.IsPublished" Color="Color.Secondary">منشور</MudCheckBox>
+                        <MudCheckBox @bind-Checked="@_model.IsActive" Color="Color.Secondary">نشط</MudCheckBox>
+                        <ValidationSummary />
+                        @if (!string.IsNullOrWhiteSpace(_errorMessage))
+                        {
+                            <MudAlert Severity="Severity.Error" Class="my-2" Variant="Variant.Filled">@_errorMessage</MudAlert>
+                        }
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Style="margin-right:50%">أضافة</MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </EditForm>
+            </div>
+            }
+
+    </DialogContent>
+</MudDialog>
+<MudDialog @bind-IsVisible="viewvisible">
+    <DialogContent>
+        <iframe width="560" height="315" src="@_viewdURL"
+                title="YouTube video player" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+    </DialogContent>
+</MudDialog>
+@code {
+    
+}

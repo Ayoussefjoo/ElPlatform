@@ -1,6 +1,7 @@
 ﻿using ElPlatform.BAL.IServices;
 using ElPlatform.BAL.Options;
 using ElPlatform.BAL.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -29,6 +30,7 @@ namespace ElPlatform.API.Controllers
         [HttpGet("GetMItems")]
         [ProducesResponseType(200, Type = typeof(ApiResponse<PagedList<MediaItemVM>>))]
         [ProducesResponseType(400, Type = typeof(ApiErrorResponse))]
+       
         public async Task<IActionResult> GetMediaItemsAsync(int pageNumber, int pageSize)
         {
             var result = await _mediaService.GetMediaItemsAsync(pageNumber,pageSize);
@@ -49,7 +51,7 @@ namespace ElPlatform.API.Controllers
         [ProducesResponseType(200, Type = typeof(ApiResponse<MediaItemVM>))]
         [ProducesResponseType(400, Type = typeof(ApiErrorResponse))]
         [HttpPost()]
-        public async Task<IActionResult> Post([FromForm] MediaItemRequestVM model)
+        public async Task<IActionResult> Post([FromBody] MediaItemRequestVM model)
         {
             var result = await _mediaService.AddMediaItemAsync(model);
 
@@ -59,7 +61,7 @@ namespace ElPlatform.API.Controllers
         [ProducesResponseType(200, Type = typeof(ApiResponse<MediaItemVM>))]
         [ProducesResponseType(400, Type = typeof(ApiErrorResponse))]
         [HttpPut()]
-        public async Task<IActionResult> Put([FromForm] MediaItemRequestVM model)
+        public async Task<IActionResult> Put([FromBody] MediaItemRequestVM model)
         {
             var result = await _mediaService.UpdateMediaItemAsync(model);
 

@@ -30,6 +30,7 @@ namespace ElPlatform.App.Components
                 _pageNumber = result.Value.Page;
                 _pageSize = result.Value.PageSize;
                 _totalPages = result.Value.TotalPages;
+                _isBusy = false;
                 return result.Value;
             }
             catch(ApiException ex)
